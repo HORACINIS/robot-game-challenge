@@ -1,0 +1,30 @@
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+:root {
+  --cell-size: 100px;
+  --robot-size: calc(var(--cell-size) * .9);
+}
+
+body {
+  margin: 0;
+}
+
+.table-surface {
+  width: 100vw;
+  height: 90vh;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  justify-items: center;
+  align-items: center;
+  grid-template-columns: repeat(5, auto);
+}
+
+.unit {
+  width: var(--cell-size);
+  height: var(--cell-size);
+  background-color: red;
+  border: 1px solid white;
+}
