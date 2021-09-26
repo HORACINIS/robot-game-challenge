@@ -40,24 +40,23 @@ let tableUnits = document.querySelectorAll('.unit')
 
 
 
-class RobotActions {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
+class Robot {
+  constructor() {
     this.robot = document.createElement('img');
-    this.coordinatesGiven = `${this.x},${this.y}`;
     this.degrees = 0;
   };
-  placeXandY() {
+
+  place(x, y, f) {
     this.robot.src = './robot/robot.png';
+    this.x = x;
+    this.y = y;
+    this.coordinatesGiven = `${this.x},${this.y}`;
     tableUnits.forEach(element => {
       if (element.id === this.coordinatesGiven) {
         element.appendChild(this.robot)
       }
     });
-  }
-  facingDirection(direction) {
-    switch (direction) {
+    switch (f) {
       case 'NORTH':
         this.degrees = 180;
         break;
@@ -84,18 +83,16 @@ class RobotActions {
   }
 }
 
-const robotOne = new RobotActions(4, 3);
-robotOne.placeXandY()
-robotOne.facingDirection('EAST');
-
+const robotOne = new Robot();
+robotOne.place(4, 3, 'EAST');
 // robotOne.rotateLeft();
 // robotOne.rotateLeft();
 // robotOne.rotateRight();
 // robotOne.rotateLeft();
 
 
-// const robotTwo = new RobotActions(1, 2);
-// robotTwo.placeXandY()
+// const robotTwo = new Robot();
+// robotTwo.place(0, 3, 'EAST');
 
 
 
