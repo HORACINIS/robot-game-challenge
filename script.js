@@ -184,6 +184,7 @@ document.querySelector('.controllers').addEventListener('click', (e) => {
         xInput.value = ''
         yInput.value = ''
         fInput.value = '';
+        document.querySelector('.extra-buttons').style.display = 'block'
       }
     }
   }
