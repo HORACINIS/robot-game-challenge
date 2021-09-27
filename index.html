@@ -11,29 +11,29 @@
 </head>
 
 <body>
-  <h1>The Robot Game Challenge</h1>
+  <h1 class="header">The Robot Game Challenge</h1>
 
-  <div>
+  <div class="controllers">
+    <div>
+      <button class="place">PLACE</button>
+      <lable>X</lable><input type="number" class="x" min=0 max=4 required>
+      <label>Y</label><input type="number" class="y" min=0 max=4 required>
+      <label>F</label><input class="f" maxlength="5">
+    </div>
+    <div>
+      <button class="left">LEFT</button>
+      <button class="right">RIGHT</button>
+      <button class="move">MOVE</button>
+    </div>
+    <div>
+      <button class="report">REPORT</button>
+    </div>
+    <div>
+      <button class="robot">ROBOT</button><input type="number" class="robotNumInput" min=0 max=5>
+    </div>
+  </div>
 
-  </div>
-  <form>
-    <button class="place" type="submit">PLACE</button>
-    <lable>X</lable><input type="number">
-    <label>Y</label><input type="number">
-    <label>F</label><input>
-  </form>
-  </div>
-  <div>
-    <button class="left">LEFT</button>
-    <button class="right">RIGHT</button>
-    <button class="move">MOVE</button>
-  </div>
-  <div>
-    <button class="report">REPORT</button>
-  </div>
-  <div>
-
-    <div class="table-surface" id="table-surface">
+  <div class="table-surface" id="table-surface">
 </body>
 
 </html>

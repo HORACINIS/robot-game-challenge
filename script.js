@@ -1,8 +1,5 @@
 'use strict';
 
-
-
-// creating 2d array
 const createTabletop = () => {
   const tableSurface = document.querySelector('#table-surface');
   const tableTopDimensionUnits = [];
@@ -10,8 +7,6 @@ const createTabletop = () => {
     tableTopDimensionUnits[r] = [];
     for (let c = 0; c < 5; c++) {
       const unit = document.createElement('div');
-
-      // tableTopDimensionUnits[r][c] = `${c},${r}`;
       tableTopDimensionUnits[r][c] = new Array(`${[c, r]}`);
 
       unit.classList = 'unit';
@@ -20,23 +15,22 @@ const createTabletop = () => {
       unit.textContent = tableTopDimensionUnits[r][c]
     }
   }
-  console.log(tableTopDimensionUnits);
 }
 createTabletop();
+
 
 
 class Robot {
   constructor() {
     this.robot = document.createElement('img');
-    // this.degrees = 0;
-    this.facingDirectionsOptions = ['SOUTH', 'WEST', 'NORTH', 'EAST']; //CLOCKWISE (RIGHT)
+    this.facingDirectionsOptions = ['SOUTH', 'WEST', 'NORTH', 'EAST'];
     this.degreesOptions = [0, 90, 180, 270];
   };
 
   place(x, y, f) {
     this.robot.src = './robot/robot.png';
-    this.x = x;
-    this.y = y;
+    this.x = +x;
+    this.y = +y;
     this.f = f;
     this.degrees = 0;
     this.coordinates = `${this.x},${this.y}`;
@@ -47,25 +41,20 @@ class Robot {
     switch (this.f) {
       case this.facingDirectionsOptions[0]: // SOUTH (0 DEGREES - ALWAYS)
         this.degrees = this.degreesOptions[0];
-        // this.f = this.facingDirectionsOptions[0]
         break;
       case this.facingDirectionsOptions[1]: // WEST (90 DEGREES - ALWAYS)
         this.degrees = this.degreesOptions[1];
-        // this.f = this.facingDirectionsOptions[1]
         break;
       case this.facingDirectionsOptions[2]: // NORTH (180 DEGREES - ALWAYS)
         this.degrees = this.degreesOptions[2];
-        // this.f = this.facingDirectionsOptions[3]
         break;
       case this.facingDirectionsOptions[3]: // EAST (270 DEGREES - ALWAYS)
         this.degrees = this.degreesOptions[3];
-        // this.f = this.facingDirectionsOptions[2]
         break;
     }
     this.robot.style.transform = `rotate(${this.degrees}deg)`
     console.log('this.f coming from place: ', this.f)
   }
-
 
 
   left() {
@@ -92,7 +81,6 @@ class Robot {
 
   right() {
     let index = this.facingDirectionsOptions.indexOf(this.f);
-    const filtering = this.facingDirectionsOptions.find(filter => filter === this.f)
     console.log(index)
     index += 1;
     if (index > 3) index = 0;
@@ -105,7 +93,6 @@ class Robot {
     console.log('index ', index)
     console.log(this.degrees + ' degrees')
     console.log(this.f)
-    console.log('filtering ', filtering)
     console.log('facing direction ', this.facingDirectionsOptions[index])
     // console.log('cordinadas right() ', this.coordinates)
     console.log('**********************************')
@@ -120,46 +107,102 @@ class Robot {
     console.log('*****************************************')
     if (this.f === 'NORTH') {
       this.y += 1;
-      document.querySelector(`[id='${this.x},${this.y}']`).appendChild(this.robot);
     }
     if (this.f === 'SOUTH') {
       this.y -= 1;
-      document.querySelector(`[id='${this.x},${this.y}']`).appendChild(this.robot);
     }
     if (this.f === 'EAST') {
       this.x += 1;
-      document.querySelector(`[id='${this.x},${this.y}']`).appendChild(this.robot);
     }
     if (this.f === 'WEST') {
       this.x -= 1;
-      document.querySelector(`[id='${this.x},${this.y}']`).appendChild(this.robot);
     }
+    document.querySelector(`[id='${this.x},${this.y}']`).appendChild(this.robot);
+
     console.log('------------- MOVE() After ------------')
     console.log(this.x, this.y)
     console.log(this.degrees + ' degrees')
     console.log(this.f)
     console.log('****************************************')
   }
+
   report() {
     console.log(`Current position X${this.x}, Y${this.y}, ${this.f}`);
+    alert(`Current position X${this.x}, Y${this.y}, ${this.f}`);
+  }
+  get numOfRobotsCreated() {
+    return this.numRobotsCreated += 1;
   }
 }
 
-const robot1 = new Robot();
-robot1.place(2, 3, 'NORTH');
-robot1.move()
-robot1.report()
-robot1.right()
-robot1.report()
-robot1.right()
 
-// const robot2 = new Robot();
-// robot2.place(0, 3, 'EAST');
-// robot2.move()
-// robot1.report()
+let allRobots = [];
+let robotChosen = 0;
+
+const createRobot = (x, y, f) => {
+  let robot = new Robot // CREATE NEW ROBOT
+  robot.place(x, y, f); // ROBOT TO BE PLACED IN GIVEN COORDINATES
+  document.querySelector('.robotNumInput').value = robotChosen
+  allRobots.push(robot) // ADD ROBOT TO THE ALL ROBOTS ARRAY
+  console.log(allRobots)
+}
+const moveRobot = (robotNum = robotChosen) => {
+  console.log(robotNum)
+  allRobots[robotNum].move(); // MOVE ROBOT, ROBOT ZERO WILL BE THE DEFAULT IF NO ROBOT NUMBER IS GIVEN
+}
+const rotateRobotLeft = (robotNum = robotChosen) => {
+  allRobots[robotNum].left();
+}
+const rotateRobotRight = (robotNum = robotChosen) => {
+  allRobots[robotNum].right();
+}
+const switchRobot = (robotNum = 0) => {
+  console.log(robotNum)
+  robotChosen = robotNum
+  allRobots[robotChosen]
+}
+const reportRobotCoordinates = (robotNum = robotChosen) => {
+  allRobots[robotNum].report();
+}
 
 
+document.querySelector('.controllers').addEventListener('click', (e) => {
+  let xInput = document.querySelector('.x');
+  let yInput = document.querySelector('.y');
+  let fInput = document.querySelector('.f');
+  const robotNumInput = document.querySelector('.robotNumInput').value;
 
+  console.log(e)
+  if (e.target.className === 'place') {     // PLACE button
+    if (fInput.value === 'NORTH' || fInput.value === 'SOUTH' || fInput.value === 'EAST' || fInput.value === 'WEST') {
+      if ((xInput.value >= 0 && xInput.value <= 4) && (yInput.value >= 0 && yInput.value <= 4)) {
+        console.log(xInput.value)
+        console.log(yInput.value)
+        console.log(fInput.value)
+        createRobot(xInput.value, yInput.value, fInput.value)
+        console.log(Robot)
+        xInput.value = ''
+        yInput.value = ''
+        fInput.value = '';
+      }
+    }
+  }
 
+  if (e.target.className === 'move') {       // MOVE button
+    moveRobot();
+  }
 
+  if (e.target.className === 'left') {
+    rotateRobotLeft();
+  }
+  if (e.target.className === 'right') {
+    rotateRobotRight();
+  }
 
+  if (e.target.className === 'robot') {    // ROBOT switch button
+    switchRobot(+robotNumInput)
+  }
+  if (e.target.className === 'report') {  // REPORT button
+    reportRobotCoordinates();
+  }
+});

@@ -2,9 +2,14 @@
   --cell-size: 100px;
 }
 
+* {
+  box-sizing: border-box;
+  margin: 0;
+}
+
 .table-surface {
   width: 100vw;
-  height: 90vh;
+  height: 70vh;
   display: grid;
   justify-content: center;
   align-content: center;
@@ -18,5 +23,14 @@
   height: var(--cell-size);
   background-color: red;
   border: 1px solid white;
+}
+
+.controllers, .header {
+  height: 10vh;
+  display: grid;
+  justify-content: center;
+  align-content: left;
+  justify-items: left;
+  align-items: center;
 }
 
