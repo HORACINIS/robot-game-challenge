@@ -184,7 +184,7 @@ document.querySelector('.controllers').addEventListener('click', (e) => {
         xInput.value = ''
         yInput.value = ''
         fInput.value = '';
-        document.querySelector('.extra-buttons').style.display = 'block'
+        document.querySelector('.extra-buttons').style.display = 'block';
       }
     }
   }
@@ -201,7 +201,12 @@ document.querySelector('.controllers').addEventListener('click', (e) => {
   }
 
   if (e.target.className === 'robot') {    // ROBOT switch button
-    switchRobot(+robotNumInput)
+    if (robotNumInput <= (allRobots.length - 1)) {
+      switchRobot(+robotNumInput)
+    } else {
+      robotChosen = allRobots.length - 1;
+      document.querySelector('.robotNumInput').value = allRobots.length - 1;
+    }
   }
   if (e.target.className === 'report') {  // REPORT button
     reportRobotCoordinates();
