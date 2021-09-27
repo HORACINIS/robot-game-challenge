@@ -1,14 +1,5 @@
-*, *::after, *::before {
-  box-sizing: border-box;
-}
-
 :root {
   --cell-size: 100px;
-  --robot-size: calc(var(--cell-size) * .9);
-}
-
-body {
-  margin: 0;
 }
 
 .table-surface {
@@ -29,9 +20,3 @@ body {
   border: 1px solid white;
 }
 
-.rotateRight {
-  transform: rotate(90deg);
-}
-.rotateLeft {
-  transform: rotate(-90deg);
-}
