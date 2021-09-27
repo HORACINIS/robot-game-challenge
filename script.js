@@ -85,7 +85,6 @@ class Robot {
     index += 1;
     if (index > 3) index = 0;
 
-
     this.f = this.facingDirectionsOptions[index]
     this.robot.style.transform = `rotate(${this.degreesOptions[index]}deg)`;
 
@@ -105,16 +104,16 @@ class Robot {
     console.log(this.degrees)
     console.log(this.f)
     console.log('*****************************************')
-    if (this.f === 'NORTH') {
+    if (this.f === 'NORTH' && this.y < 4) {
       this.y += 1;
     }
-    if (this.f === 'SOUTH') {
+    if (this.f === 'SOUTH' && this.y > 0) {
       this.y -= 1;
     }
-    if (this.f === 'EAST') {
+    if (this.f === 'EAST' && this.x < 4) {
       this.x += 1;
     }
-    if (this.f === 'WEST') {
+    if (this.f === 'WEST' && this.x > 0) {
       this.x -= 1;
     }
     document.querySelector(`[id='${this.x},${this.y}']`).appendChild(this.robot);
@@ -184,6 +183,7 @@ document.querySelector('.controllers').addEventListener('click', (e) => {
         xInput.value = ''
         yInput.value = ''
         fInput.value = '';
+        document.querySelector('.extra-buttons').style.display = 'block';
       }
     }
   }
@@ -192,15 +192,20 @@ document.querySelector('.controllers').addEventListener('click', (e) => {
     moveRobot();
   }
 
-  if (e.target.className === 'left') {
+  if (e.target.className === 'left') {      // LEFT turn
     rotateRobotLeft();
   }
-  if (e.target.className === 'right') {
+  if (e.target.className === 'right') {     // RIGHT turn
     rotateRobotRight();
   }
 
   if (e.target.className === 'robot') {    // ROBOT switch button
-    switchRobot(+robotNumInput)
+    if (robotNumInput <= (allRobots.length - 1)) {
+      switchRobot(+robotNumInput)
+    } else {
+      robotChosen = allRobots.length - 1;
+      document.querySelector('.robotNumInput').value = allRobots.length - 1;
+    }
   }
   if (e.target.className === 'report') {  // REPORT button
     reportRobotCoordinates();

@@ -34,3 +34,7 @@
   align-items: center;
 }
 
+.extra-buttons {
+  display: none;
+}
+
