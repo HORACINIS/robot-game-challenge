@@ -14,7 +14,7 @@ let numRobotSelected = 0;
       unit.classList = 'unit';
       unit.id = tableTopDimensionUnits[i][j];
       tableSurface.appendChild(unit);
-      unit.textContent = tableTopDimensionUnits[i][j]
+      unit.textContent = tableTopDimensionUnits[i][j];
     }
   }
 })();
@@ -46,14 +46,14 @@ class Robot {
           break;
       }
     }
-    this.robot.style.transform = `rotate(${this.degrees}deg)`
+    this.robot.style.transform = `rotate(${this.degrees}deg)`;
   }
 
   left() {
     let index = this.facingDirectionsOptions.indexOf(this.f);
     index -= 1;
     if (index < 0) index = 3;
-    this.f = this.facingDirectionsOptions[index]
+    this.f = this.facingDirectionsOptions[index];
     this.robot.style.transform = `rotate(${this.degreesOptions[index]}deg)`;
   }
 
@@ -61,7 +61,7 @@ class Robot {
     let index = this.facingDirectionsOptions.indexOf(this.f);
     index += 1;
     if (index > 3) index = 0;
-    this.f = this.facingDirectionsOptions[index]
+    this.f = this.facingDirectionsOptions[index];
     this.robot.style.transform = `rotate(${this.degreesOptions[index]}deg)`;
   }
 
@@ -82,7 +82,7 @@ class Robot {
 }
 
 
-// Robot functions
+// Robots functions
 const createRobot = () => {
   const xInput = document.querySelector('.x');
   const yInput = document.querySelector('.y');
@@ -94,28 +94,30 @@ const createRobot = () => {
       robot.place(xInput.value, yInput.value, fInput.value);
       document.querySelector('.robotNumInput').value = numRobotSelected;
       robots.push(robot)
-      xInput.value = ''
-      yInput.value = ''
+      xInput.value = '';
+      yInput.value = '';
       fInput.value = '';
       document.querySelector('.extra-buttons').style.display = 'block';
       robots.filter(robot => {
         if (robots[numRobotSelected] === robot) {
-          robot.changeRobotColor('./robotImages/selected-robot.png')
+          robot.changeRobotColor('./robotImages/selected-robot.png');
         }
       });
     }
   }
 }
+
 const moveRobot = () => {
   robots[numRobotSelected].move();
 }
+
 const rotateRobotLeft = () => {
   robots[numRobotSelected].left();
 }
+
 const rotateRobotRight = () => {
   robots[numRobotSelected].right();
 }
-
 
 const switchRobot = () => {
   const robotNumInput = document.querySelector('.robotNumInput').value;
@@ -132,6 +134,7 @@ const switchRobot = () => {
     document.querySelector('.robotNumInput').value = numRobotSelected;
   }
 }
+
 const reportRobotPosition = () => {
   robots[numRobotSelected].report();
 }
