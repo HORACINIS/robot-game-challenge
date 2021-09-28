@@ -1,7 +1,7 @@
 'use strict';
 
 const robots = [];
-let robotSelected = 0;
+let numRobotSelected = 0;
 
 (function () {
   const tableSurface = document.querySelector('#table-surface');
@@ -25,10 +25,10 @@ class Robot {
     this.robot = document.createElement('img');
     this.facingDirectionsOptions = ['SOUTH', 'WEST', 'NORTH', 'EAST'];
     this.degreesOptions = [0, 90, 180, 270];
+    this.robot.src = './robotImages/unselected-robot.png';
   };
 
   place(x, y, f) {
-    this.robot.src = './robot/robot.png';
     this.x = +x;
     this.y = +y;
     this.f = f;
@@ -66,21 +66,15 @@ class Robot {
   }
 
   move() {
-    if (this.f === 'NORTH' && this.y < 4) {
-      this.y += 1;
-    }
-    if (this.f === 'SOUTH' && this.y > 0) {
-      this.y -= 1;
-    }
-    if (this.f === 'EAST' && this.x < 4) {
-      this.x += 1;
-    }
-    if (this.f === 'WEST' && this.x > 0) {
-      this.x -= 1;
-    }
+    if (this.f === 'NORTH' && this.y < 4) this.y += 1;
+    if (this.f === 'SOUTH' && this.y > 0) this.y -= 1;
+    if (this.f === 'EAST' && this.x < 4) this.x += 1;
+    if (this.f === 'WEST' && this.x > 0) this.x -= 1;
     document.querySelector(`[id='${this.x},${this.y}']`).appendChild(this.robot);
   }
-
+  changeRobotColor(img) {
+    this.robot.src = img;
+  }
   report() {
     console.log(`Current position X${this.x}, Y${this.y}, ${this.f}`);
     alert(`Current position X${this.x}, Y${this.y}, ${this.f}`);
@@ -88,6 +82,7 @@ class Robot {
 }
 
 
+// Robot functions
 const createRobot = () => {
   const xInput = document.querySelector('.x');
   const yInput = document.querySelector('.y');
@@ -97,35 +92,48 @@ const createRobot = () => {
     if ((xInput.value >= 0 && xInput.value <= 4) && (yInput.value >= 0 && yInput.value <= 4)) {
       const robot = new Robot
       robot.place(xInput.value, yInput.value, fInput.value);
-      document.querySelector('.robotNumInput').value = robotSelected;
+      document.querySelector('.robotNumInput').value = numRobotSelected;
       robots.push(robot)
       xInput.value = ''
       yInput.value = ''
       fInput.value = '';
       document.querySelector('.extra-buttons').style.display = 'block';
+      robots.filter(robot => {
+        if (robots[numRobotSelected] === robot) {
+          robot.changeRobotColor('./robotImages/selected-robot.png')
+        }
+      });
     }
   }
 }
 const moveRobot = () => {
-  robots[robotSelected].move();
+  robots[numRobotSelected].move();
 }
 const rotateRobotLeft = () => {
-  robots[robotSelected].left();
+  robots[numRobotSelected].left();
 }
 const rotateRobotRight = () => {
-  robots[robotSelected].right();
+  robots[numRobotSelected].right();
 }
+
+
 const switchRobot = () => {
   const robotNumInput = document.querySelector('.robotNumInput').value;
   if (robotNumInput <= (robots.length - 1)) {
-    robotSelected = robotNumInput;
+    numRobotSelected = robotNumInput;
+    robots.filter(robot => {
+      if (robots[numRobotSelected] === robot) {
+        robot.changeRobotColor('./robotImages/selected-robot.png');
+      } else {
+        robot.changeRobotColor('./robotImages/unselected-robot.png');
+      }
+    });
   } else {
-    document.querySelector('.robotNumInput').value = robotSelected;
+    document.querySelector('.robotNumInput').value = numRobotSelected;
   }
 }
-
 const reportRobotPosition = () => {
-  robots[robotSelected].report();
+  robots[numRobotSelected].report();
 }
 
 document.querySelector('.place').addEventListener('click', () => createRobot());
