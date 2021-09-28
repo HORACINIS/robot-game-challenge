@@ -19,7 +19,6 @@ const createTabletop = () => {
 createTabletop();
 
 
-
 class Robot {
   constructor() {
     this.robot = document.createElement('img');
@@ -53,57 +52,27 @@ class Robot {
         break;
     }
     this.robot.style.transform = `rotate(${this.degrees}deg)`
-    console.log('this.f coming from place: ', this.f)
   }
 
 
   left() {
     let index = this.facingDirectionsOptions.indexOf(this.f);
-    const filtering = this.facingDirectionsOptions.find(filter => filter === this.f)
-    console.log(index)
     index -= 1;
     if (index < 0) index = 3;
-
-
     this.f = this.facingDirectionsOptions[index]
     this.robot.style.transform = `rotate(${this.degreesOptions[index]}deg)`;
-
-    console.log('------------- LEFT() ------------')
-    console.log('index ', index)
-    console.log(this.degrees + ' degrees')
-    console.log(this.f)
-    console.log('filtering ', filtering)
-    console.log('facing direction ', this.facingDirectionsOptions[index])
-    // console.log('cordinadas left() ', this.coordinates)
-    console.log('**********************************')
 
   }
 
   right() {
     let index = this.facingDirectionsOptions.indexOf(this.f);
-    console.log(index)
     index += 1;
     if (index > 3) index = 0;
-
     this.f = this.facingDirectionsOptions[index]
     this.robot.style.transform = `rotate(${this.degreesOptions[index]}deg)`;
-
-    console.log('------------- RIGHT() ------------')
-    console.log('index ', index)
-    console.log(this.degrees + ' degrees')
-    console.log(this.f)
-    console.log('facing direction ', this.facingDirectionsOptions[index])
-    // console.log('cordinadas right() ', this.coordinates)
-    console.log('**********************************')
-
   }
 
   move() {
-    console.log('------------- MOVE() Before ------------')
-    console.log(this.x, this.y)
-    console.log(this.degrees)
-    console.log(this.f)
-    console.log('*****************************************')
     if (this.f === 'NORTH' && this.y < 4) {
       this.y += 1;
     }
@@ -117,20 +86,11 @@ class Robot {
       this.x -= 1;
     }
     document.querySelector(`[id='${this.x},${this.y}']`).appendChild(this.robot);
-
-    console.log('------------- MOVE() After ------------')
-    console.log(this.x, this.y)
-    console.log(this.degrees + ' degrees')
-    console.log(this.f)
-    console.log('****************************************')
   }
 
   report() {
     console.log(`Current position X${this.x}, Y${this.y}, ${this.f}`);
     alert(`Current position X${this.x}, Y${this.y}, ${this.f}`);
-  }
-  get numOfRobotsCreated() {
-    return this.numRobotsCreated += 1;
   }
 }
 
@@ -138,16 +98,27 @@ class Robot {
 let allRobots = [];
 let robotChosen = 0;
 
-const createRobot = (x, y, f) => {
-  let robot = new Robot // CREATE NEW ROBOT
-  robot.place(x, y, f); // ROBOT TO BE PLACED IN GIVEN COORDINATES
-  document.querySelector('.robotNumInput').value = robotChosen
-  allRobots.push(robot) // ADD ROBOT TO THE ALL ROBOTS ARRAY
+const createRobot = () => {
+  let xInput = document.querySelector('.x');
+  let yInput = document.querySelector('.y');
+  let fInput = document.querySelector('.f');
   console.log(allRobots)
+
+  if (fInput.value === 'NORTH' || fInput.value === 'SOUTH' || fInput.value === 'EAST' || fInput.value === 'WEST') {
+    if ((xInput.value >= 0 && xInput.value <= 4) && (yInput.value >= 0 && yInput.value <= 4)) {
+      let robot = new Robot // CREATE NEW ROBOT
+      robot.place(xInput.value, yInput.value, fInput.value); // ROBOT TO BE PLACED IN GIVEN COORDINATES
+      document.querySelector('.robotNumInput').value = robotChosen
+      allRobots.push(robot) // ADD ROBOT TO THE ALL ROBOTS ARRAY
+      xInput.value = ''
+      yInput.value = ''
+      fInput.value = '';
+      document.querySelector('.extra-buttons').style.display = 'block';
+    }
+  }
 }
 const moveRobot = (robotNum = robotChosen) => {
-  console.log(robotNum)
-  allRobots[robotNum].move(); // MOVE ROBOT, ROBOT ZERO WILL BE THE DEFAULT IF NO ROBOT NUMBER IS GIVEN
+  allRobots[robotNum].move();
 }
 const rotateRobotLeft = (robotNum = robotChosen) => {
   allRobots[robotNum].left();
@@ -155,59 +126,28 @@ const rotateRobotLeft = (robotNum = robotChosen) => {
 const rotateRobotRight = (robotNum = robotChosen) => {
   allRobots[robotNum].right();
 }
-const switchRobot = (robotNum = 0) => {
-  console.log(robotNum)
-  robotChosen = robotNum
-  allRobots[robotChosen]
-}
-const reportRobotCoordinates = (robotNum = robotChosen) => {
-  allRobots[robotNum].report();
-}
 
 
-document.querySelector('.controllers').addEventListener('click', (e) => {
-  let xInput = document.querySelector('.x');
-  let yInput = document.querySelector('.y');
-  let fInput = document.querySelector('.f');
+const switchRobot = () => {
   const robotNumInput = document.querySelector('.robotNumInput').value;
 
-  console.log(e)
-  if (e.target.className === 'place') {     // PLACE button
-    if (fInput.value === 'NORTH' || fInput.value === 'SOUTH' || fInput.value === 'EAST' || fInput.value === 'WEST') {
-      if ((xInput.value >= 0 && xInput.value <= 4) && (yInput.value >= 0 && yInput.value <= 4)) {
-        console.log(xInput.value)
-        console.log(yInput.value)
-        console.log(fInput.value)
-        createRobot(xInput.value, yInput.value, fInput.value)
-        console.log(Robot)
-        xInput.value = ''
-        yInput.value = ''
-        fInput.value = '';
-        document.querySelector('.extra-buttons').style.display = 'block';
-      }
-    }
+  if (robotNumInput <= (allRobots.length - 1)) {
+    robotChosen = robotNumInput;
+    allRobots[robotChosen]
+  } else {
+    document.querySelector('.robotNumInput').value = robotChosen;
   }
+}
 
-  if (e.target.className === 'move') {       // MOVE button
-    moveRobot();
-  }
+const reportRobotPosition = () => {
+  allRobots[robotChosen].report();
+}
 
-  if (e.target.className === 'left') {      // LEFT turn
-    rotateRobotLeft();
-  }
-  if (e.target.className === 'right') {     // RIGHT turn
-    rotateRobotRight();
-  }
 
-  if (e.target.className === 'robot') {    // ROBOT switch button
-    if (robotNumInput <= (allRobots.length - 1)) {
-      switchRobot(+robotNumInput)
-    } else {
-      robotChosen = allRobots.length - 1;
-      document.querySelector('.robotNumInput').value = allRobots.length - 1;
-    }
-  }
-  if (e.target.className === 'report') {  // REPORT button
-    reportRobotCoordinates();
-  }
-});
+
+document.querySelector('.place').addEventListener('click', () => createRobot());
+document.querySelector('.move').addEventListener('click', () => moveRobot());
+document.querySelector('.left').addEventListener('click', () => rotateRobotLeft());
+document.querySelector('.right').addEventListener('click', () => rotateRobotRight());
+document.querySelector('.robot').addEventListener('click', () => switchRobot());
+document.querySelector('.report').addEventListener('click', () => reportRobotPosition());
